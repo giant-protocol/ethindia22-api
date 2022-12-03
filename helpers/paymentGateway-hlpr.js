@@ -92,8 +92,6 @@ var PaymentHelper = function (depay) {
             response.all = all;
             response.escrow = escrow;
             callback(null, response);
-
-
         }
     }
 }

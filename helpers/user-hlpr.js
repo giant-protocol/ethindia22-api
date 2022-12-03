@@ -46,12 +46,19 @@ var UserHelper = function (depay) {
         },
         phoneNumberStatus: async function (args, callback) {
             try {
-                var user = await depay.models.api.user.findOne({phoneNumber: args.body.phoneNumber});
-                if(user){
-                    callback(null, {status:true,data:user});
-                }else{
-                    callback(null, {status:false});
-                }
+                let contract = new web3.eth.Contract(DePayGateway_ABI,process.env.DePayGatewayAddress);
+                let itemId =  contract.methods.getId(args.body.phoneNumber.replace('+','')).call();
+                itemId.then(async response => {
+                    var user = await depay.models.api.user.findOne({phoneNumber: args.body.phoneNumber});
+                    if(user){
+                        callback(null, {status:true,data:user});
+                    }else{
+                        callback(null, {status:false,data:response});
+                    }
+                }).catch((error) => {
+                    console.log(error)
+                });
+
             } catch (e) {
                 console.log(e)
                 callback(null,  {status:false});
