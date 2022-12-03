@@ -136,7 +136,6 @@ var UserHelper = function (depay) {
                     {
                         responseType: 'arraybuffer'
                     },
-
                     {
                         headers: {
                             "Content-Type": "application/json",
@@ -160,7 +159,7 @@ var UserHelper = function (depay) {
                             userId :response
                         });
                     }).catch((error) => {
-                        console.log(response)
+                        console.log(error)
                     });
 
                 }
