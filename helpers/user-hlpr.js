@@ -29,9 +29,13 @@ var UserHelper = function (depay) {
                          user: 'eip155:+'+process.env.CHAIN_ID+':'+args.body.walletAddress,
                          env: process.env.BUILD
                      });
+                     var erc20Balances =_.filter(result.data.data.items, function(crypto) {
+                         return crypto.contract_address === '0x0000000000000000000000000000000000001010' || crypto.contract_address == process.env.TOKEN_CONTRACT_ADDRESS;
+                     });
+
                      var isPushProtocolEnabled =_.filter(isPushProtocolSubscribed, {channel:process.env.PUSH_CHANNEL_ADDRESS });
                      isPushProtocolEnabled = isPushProtocolEnabled.length > 0 ? true :false;
-                     callback(null, {status:true,data:{balance:result.data,user:user,isPushProtocolEnabled:isPushProtocolEnabled}});
+                     callback(null, {status:true,data:{balance:erc20Balances,user:user,isPushProtocolEnabled:isPushProtocolEnabled}});
                  }else{
                      callback(null, {status:false});
                  }
