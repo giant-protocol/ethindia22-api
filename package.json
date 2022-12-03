@@ -4,7 +4,7 @@
   "description": "DePay helps to send and receive crypto without a wallet address, using phone numbers.",
   "main": "app",
   "scripts": {
-    "test": "npm test"
+    "start": "NODE_ENV=go_live node ./app.js"
   },
   "keywords": [
     "ETHINDIA",
