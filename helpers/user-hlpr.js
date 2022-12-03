@@ -71,8 +71,7 @@ var UserHelper = function (depay) {
             }
         },
         verifyOtp: async function (args, callback) {
-            this.verifyPolygonId(args,callback);
-            /*await client.verify.services(process.env.TWILIO_VERIFICATION_TOKEN)
+            await client.verify.services(process.env.TWILIO_VERIFICATION_TOKEN)
                 .verificationChecks
                 .create({
                     to: args.body.phoneNumber,
@@ -80,7 +79,7 @@ var UserHelper = function (depay) {
                 })
                 .then(async check => {
                     if(check.status == "approved"){
-
+                        this.verifyPolygonId(args,callback);
                     }else{
                         callback(null, {status:false,message :'Verification failed'});
                     }
@@ -88,7 +87,7 @@ var UserHelper = function (depay) {
                 .catch(error => {
                     console.log(error);
                     callback(null, {status:false,message :'Verification failed'});
-                });*/
+                });
         },
         verifyPolygonId: async function (args, callback) {
             try{
