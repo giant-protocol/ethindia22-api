@@ -93,7 +93,7 @@ var UserHelper = function (depay) {
             try{
                 const authToken = await axios.post(
                     'https://api-staging.polygonid.com/v1/orgs/sign-in',
-                    {email: 'toufeeqpasha.20@gmail.com',password:"Pasha@polygonid1"},
+                    {email: process.env.POLYGONID_EMAIL ,password:process.env.POLYGONID_PASSWORD},
                     {
                         headers: {
                             "Content-Type": "application/json",
