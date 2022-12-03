@@ -36,16 +36,63 @@ var PaymentHelper = function (depay) {
             callback(null, {status : true});
         },
         getTransaction: async function (args, callback) {
+            var response = {};
+            var received = [];
+            var send = [];
+            var all = [];
+
+            var escrow = [];
             var txns = await depay.models.api.paymentGateway.find({$or:[{"from":args.user.userId},{"to":args.user.userId}]},
                 ['_id','fromDPN','type', 'status', 'userId', 'txHash', 'from', 'to', 'cryptoSymbol', 'createdOn','amount','isToken','isSendToDPN','isEscrow','notes','isExpired','usdAmount','_updated_at'],
                 {
-
                     sort: {
                         createdOn: -1 //Sort by Date Created DESC
                     }
                 });
+            txns.map(val =>{
+                var json = {};
+                json.status = val.status;
+                json.usdAmount = val.usdAmount;
+                json.id = val._id;
+                json.user = val.user;
+                json.txHash = val.txHash !== undefined ? val.txHash :'none';
+                json.isExpired =  val.isExpired;
+                json.from = val.from;
+                json.to = val.to;
+                json.cryptoSymbol = val.cryptoSymbol;
+                json.createdOn = val.createdOn;
+                json.amount = val.amount;
+                json.isToken = val.isToken;
+                json.isSendToDPN = val.isSendToDPN;
+                json.isEscrow = val.isEscrow;
+                json.notes = val.notes;
+                json.type = val.type;
+                json.fromDPN = val.fromDPN;
+                if(val.isEscrow === true){
+                    if(val.status === 'success' && val.type === 'sent' && val.isExpired === false){
+                        var end = moment();
+                        var startTime = moment(val._updated_at);
+                        var mins = end.diff(startTime, 'minutes');
+                        if(mins > 10080){
+                            json.isExpired =  true;
+                        }
+                    }
+                    escrow.push(json);
+                    all.push(json);
+                }else if((val.type === 'sent') && val.from === args.user.userId){
+                    all.push(json);
+                    send.push(json);
+                }else if(val.type !== 'request' && val.to === args.user.userId ){
+                    received.push(json);
+                    all.push(json);
+                }
+            });
+            response.send = send;
+            response.received = received;
+            response.all = all;
+            response.escrow = escrow;
+            callback(null, response);
 
-            callback(null,txns);
 
         }
     }
