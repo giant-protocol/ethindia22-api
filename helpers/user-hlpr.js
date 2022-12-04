@@ -209,16 +209,8 @@ var UserHelper = function (depay) {
             }
         },
         claimToken: async function (args, callback) {
-            var paymentGateway = await depay.models.api.paymentGateway.findOne({txHash: req.body.txHash});
-
-             if(paymentGateway){
-                 var user = await depay.models.api.user.findOne({userId: paymentGateway.to});
-                 if(user){
-
-                     callback(null, {status:true,data:result});
-                 }
-
-             }
+            var paymentGateway = await depay.models.api.paymentGateway.updateOne({txHash: args.txHash},{$set: {isSendToDPN: true,isEscrow :false}});
+            callback(null, {status:true});
         }
     };
 };

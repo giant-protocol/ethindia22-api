@@ -45,10 +45,25 @@ function init(app, depay, router) {
      */
     router.route('/paymentGateway/event')
         .post(async function (req, res, next) {
-            console.log(req.body.txs[0].hash);
             var args = {};
             args.txHash = req.body.txs[0].hash;
             depay.helpers.api.paymentGateway(depay).sendNotification(args, function (err, response) {
+                if (err) {
+                    return next(err);
+                }
+                res.json(response);
+            });
+        });
+    /**
+     * Function that helps to send notification to recevier
+     * @param    {txhash} transaction hash
+     * @return   {status}
+     */
+    router.route('/paymentGateway/claim')
+        .post(async function (req, res, next) {
+            var args = {};
+            args.txHash = req.body.txHash;
+            depay.helpers.api.user(depay).claimToken(args, function (err, response) {
                 if (err) {
                     return next(err);
                 }
