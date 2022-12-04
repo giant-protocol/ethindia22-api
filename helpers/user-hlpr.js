@@ -17,7 +17,7 @@ var UserHelper = function (depay) {
 
         userStatus: async function (args, callback) {
             try {
-                var user = await depay.models.api.user.findOne({walletAddress: args.body.walletAddress.toLowerCase()});
+                var user = await depay.models.api.user.findOne({walletAddress: args.body.walletAddress});
                  if(user){
                      const result = await axios.get(
                          'https://api.covalenthq.com/v1/80001/address/'+args.body.walletAddress+'/balances_v2/?quote-currency=USD&format=JSON&nft=true&no-nft-fetch=false&key='+process.env.COVALENT_API,
