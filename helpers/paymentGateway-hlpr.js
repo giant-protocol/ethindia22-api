@@ -19,7 +19,7 @@ var PaymentHelper = function (depay) {
                 usdAmount: args.body.usdAmount,
             });
             if(args.toUser){
-                args.body.walletAddress = args.user.walletAddress;
+                args.body.walletAddress = args.toUser.walletAddress;
                 args.title ="Money Received";
                 args.message ='You received '+args.body.amount + ' '+args.body.cryptoSymbol +'  in your account and will be available for use the Depay app.'
                 depay.helpers.api.user(depay).sendPushProtocalNotification(args);
