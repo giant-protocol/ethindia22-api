@@ -13,7 +13,6 @@ const DePayGateway_ABI =[{"inputs":[],"stateMutability":"nonpayable","type":"con
 var web3 = new Web3(new Web3.providers.HttpProvider(process.env.RPC_URL));
 const SolidityFunction = require('web3/lib/web3/function');
 const Tx = require('ethereumjs-tx');
-const _ = require('lodash');
 var UserHelper = function (depay) {
     return {
 
