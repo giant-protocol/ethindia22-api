@@ -22,7 +22,7 @@ var PaymentHelper = function (depay) {
                 args.body.walletAddress = args.user.walletAddress;
                 args.title ="Money Received";
                 args.message ='You received '+args.body.amount + ' '+args.body.cryptoSymbol +'  in your account and will be available for use the Depay app.'
-                this.sendPushProtocalNotification(args);
+                depay.helpers.api.user(depay).sendPushProtocalNotification(args);
             }
             callback(null, {status : true,message :'Transaction has been created'});
         },
