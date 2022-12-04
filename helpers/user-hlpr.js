@@ -112,11 +112,11 @@ var UserHelper = function (depay) {
                     });
                 var expireDate = moment().add(1, 'year').format("YYYY/MM/DD");
                 const claimOffer = await axios.post(
-                    'https://api-staging.polygonid.com/v1/issuers/5415e816-7be8-4891-9551-6708016e3e13/schemas/9b55517b-4d28-4c01-91c3-05da64b2230e/offers',
+                    'https://api-staging.polygonid.com/v1/issuers/6f718503-247b-437f-8ff7-f9ed78ed27db/schemas/cbe2545f-46d5-41a0-b8a2-0baedea3fd32/offers',
                     {
                         "attributes": [
                             {
-                                "attributeKey": "phone",
+                                "attributeKey": "PhoneNumber",
                                 "attributeValue": Number(args.body.phoneNumber.replace('+',''))
                             }
                         ],
@@ -174,8 +174,8 @@ var UserHelper = function (depay) {
                     });
 
                 }
-                args.title ="Wallet Associated";
-                args.message ="Wallet Associated Successfully";
+                args.title ="Wallet Linked";
+                args.message ="Your successfully linked wallet to your phone number";
                 this.sendPushProtocalNotification(args);
                 callback(null, {status:true,data:base64str});
             }catch (e) {
@@ -207,6 +207,33 @@ var UserHelper = function (depay) {
             } catch (err) {
                 console.error('Error: ', err);
             }
+        },
+        claimToken: async function (args, callback) {
+            var paymentGateway = await depay.models.api.paymentGateway.findOne({txHash: req.body.txHash});
+             if(paymentGateway){
+                 let solidityFunction = new SolidityFunction('', _.find(DePayGateway_ABI, { name: 'claimToken' }), '');
+                 let payloadData = solidityFunction.toPayload([paymentGateway.from, paymentGateway.to, v, r, s]).data;  //console.log(payloadData);
+                 var gasPrice = web3.eth.gasPrice;
+                 var gasPriceHex = web3.toHex(gasPrice);
+                 var gasLimitHex = web3.toHex(300000);
+                 var nonce =  web3.eth.getTransactionCount(process.env.ADMIN_ACCOUNT_ADDRESS);
+                 var nonceHex = web3.toHex(nonce);
+                 var rawTx = {
+                     nonce: nonceHex,
+                     gasPrice: gasPriceHex,
+                     gasLimit: gasLimitHex,
+                     to: process.env.DEPAY_CONTRACT_ADDRESS,
+                     from: process.env.ADMIN_ACCOUNT_ADDRESS,
+                     data: payloadData
+                 };
+
+                 let key = Buffer.from(process.env.ADMIN_ACCOUNT_PRIVATEKEY, 'hex');
+                 let tx = new Tx(rawTx);
+                 tx.sign(key);
+                 console.log(tx.sign(key));
+                 let serializedTx = tx.serialize();
+                 var result = await web3.eth.sendRawTransaction('0x' + serializedTx.toString('hex'));
+             }
         }
     };
 };
