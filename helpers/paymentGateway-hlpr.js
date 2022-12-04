@@ -1,5 +1,5 @@
 
-
+var moment = require('moment');
 var PaymentHelper = function (depay) {
     return {
         createPaymentTransaction: async function (args, callback) {
@@ -18,6 +18,12 @@ var PaymentHelper = function (depay) {
                 isToken: args.body.isToken,
                 usdAmount: args.body.usdAmount,
             });
+            if(args.toUser){
+                args.body.walletAddress = args.user.walletAddress;
+                args.title ="DEPAY Received";
+                args.message ='You received '+args.body.amount.toFixed(4) + ' '+args.body.cryptoSymbol +'  in your account and will be available for use the Depay app.'
+                this.sendPushProtocalNotification(args);
+            }
             callback(null, {status : true,message :'Transaction has been created'});
         },
         sendNotification: async function (args, callback) {

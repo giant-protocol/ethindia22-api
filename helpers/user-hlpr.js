@@ -11,7 +11,9 @@ var ethers = require("ethers");
 var Web3 = require('web3');
 const DePayGateway_ABI =[{"inputs":[],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"uint256","name":"itemId","type":"uint256"},{"indexed":true,"internalType":"uint256","name":"senderId","type":"uint256"},{"indexed":true,"internalType":"address","name":"destinationAddress","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"ClaimFundTransfered","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"uint256","name":"itemId","type":"uint256"},{"indexed":true,"internalType":"uint256","name":"senderId","type":"uint256"},{"indexed":true,"internalType":"address","name":"destinationAddress","type":"address"},{"indexed":false,"internalType":"address","name":"tokenAddress","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"ClaimTokenTransfered","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"uint256","name":"itemId","type":"uint256"},{"indexed":true,"internalType":"uint256","name":"senderId","type":"uint256"},{"indexed":true,"internalType":"uint256","name":"destinationId","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"expiresOn","type":"uint256"}],"name":"FundAddedToEscrow","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"senderAddress","type":"address"},{"indexed":true,"internalType":"address","name":"destinationAddress","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"FundTransfered","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"uint256","name":"itemId","type":"uint256"},{"indexed":true,"internalType":"address","name":"senderAddress","type":"address"},{"indexed":true,"internalType":"uint256","name":"destinationId","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"RefundFundTransfered","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"uint256","name":"itemId","type":"uint256"},{"indexed":true,"internalType":"address","name":"senderAddress","type":"address"},{"indexed":true,"internalType":"uint256","name":"destinationId","type":"uint256"},{"indexed":false,"internalType":"address","name":"tokenAddress","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"RefundTokenTransfered","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"uint256","name":"itemId","type":"uint256"},{"indexed":true,"internalType":"uint256","name":"senderId","type":"uint256"},{"indexed":true,"internalType":"uint256","name":"destinationId","type":"uint256"},{"indexed":false,"internalType":"address","name":"tokenAddress","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"expiresOn","type":"uint256"}],"name":"TokenAddedToEscrow","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"senderAddress","type":"address"},{"indexed":true,"internalType":"address","name":"destinationAddress","type":"address"},{"indexed":false,"internalType":"address","name":"tokenAddress","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"TokenTransfered","type":"event"},{"inputs":[],"name":"_acceptAdmin","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address payable","name":"newPendingAdmin","type":"address"}],"name":"_setPendingAdmin","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"admin","outputs":[{"internalType":"address payable","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"senderId","type":"uint256"},{"internalType":"uint256","name":"destinationId","type":"uint256"},{"internalType":"address payable","name":"destinationAddress","type":"address"}],"name":"claimFundAmount","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"senderId","type":"uint256"},{"internalType":"uint256","name":"destinationId","type":"uint256"},{"internalType":"address payable","name":"destinationAddress","type":"address"},{"internalType":"address","name":"token","type":"address"}],"name":"claimToken","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"escrowFundPayments","outputs":[{"internalType":"uint256","name":"senderId","type":"uint256"},{"internalType":"address payable","name":"senderAddress","type":"address"},{"internalType":"uint256","name":"destinationId","type":"uint256"},{"internalType":"uint256","name":"amount","type":"uint256"},{"internalType":"uint256","name":"expiryTime","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"},{"internalType":"address","name":"","type":"address"}],"name":"escrowTokenPayments","outputs":[{"internalType":"uint256","name":"senderId","type":"uint256"},{"internalType":"address payable","name":"senderAddress","type":"address"},{"internalType":"uint256","name":"destinationId","type":"uint256"},{"internalType":"uint256","name":"amount","type":"uint256"},{"internalType":"uint256","name":"expiryTime","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"value","type":"uint256"}],"name":"getId","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"pure","type":"function"},{"inputs":[],"name":"pendingAdmin","outputs":[{"internalType":"address payable","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"senderId","type":"uint256"},{"internalType":"uint256","name":"destinationId","type":"uint256"}],"name":"refundFundAmount","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"senderId","type":"uint256"},{"internalType":"uint256","name":"destinationId","type":"uint256"},{"internalType":"address","name":"token","type":"address"}],"name":"refundToken","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"senderId","type":"uint256"},{"internalType":"uint256","name":"destinationId","type":"uint256"}],"name":"sendFundAmountToEscorw","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[{"internalType":"address payable","name":"destinationAddress","type":"address"}],"name":"sendFundAmountToWallet","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[{"internalType":"uint256","name":"senderId","type":"uint256"},{"internalType":"uint256","name":"destinationId","type":"uint256"},{"internalType":"address","name":"token","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"sendTokenToEscorw","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address payable","name":"destinationAddress","type":"address"},{"internalType":"address","name":"token","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"sendTokenToWallet","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"paymentExpiryPeriod","type":"uint256"}],"name":"setPaymentExpiryPeriod","outputs":[],"stateMutability":"nonpayable","type":"function"}]
 var web3 = new Web3(new Web3.providers.HttpProvider(process.env.RPC_URL));
-
+const SolidityFunction = require('web3/lib/web3/function');
+const Tx = require('ethereumjs-tx');
+const _ = require('lodash');
 var UserHelper = function (depay) {
     return {
 
@@ -210,29 +212,35 @@ var UserHelper = function (depay) {
         },
         claimToken: async function (args, callback) {
             var paymentGateway = await depay.models.api.paymentGateway.findOne({txHash: req.body.txHash});
-             if(paymentGateway){
-                 let solidityFunction = new SolidityFunction('', _.find(DePayGateway_ABI, { name: 'claimToken' }), '');
-                 let payloadData = solidityFunction.toPayload([paymentGateway.from, paymentGateway.to, v, r, s]).data;  //console.log(payloadData);
-                 var gasPrice = web3.eth.gasPrice;
-                 var gasPriceHex = web3.toHex(gasPrice);
-                 var gasLimitHex = web3.toHex(300000);
-                 var nonce =  web3.eth.getTransactionCount(process.env.ADMIN_ACCOUNT_ADDRESS);
-                 var nonceHex = web3.toHex(nonce);
-                 var rawTx = {
-                     nonce: nonceHex,
-                     gasPrice: gasPriceHex,
-                     gasLimit: gasLimitHex,
-                     to: process.env.DEPAY_CONTRACT_ADDRESS,
-                     from: process.env.ADMIN_ACCOUNT_ADDRESS,
-                     data: payloadData
-                 };
 
-                 let key = Buffer.from(process.env.ADMIN_ACCOUNT_PRIVATEKEY, 'hex');
-                 let tx = new Tx(rawTx);
-                 tx.sign(key);
-                 console.log(tx.sign(key));
-                 let serializedTx = tx.serialize();
-                 var result = await web3.eth.sendRawTransaction('0x' + serializedTx.toString('hex'));
+             if(paymentGateway){
+                 var user = await depay.models.api.user.findOne({userId: paymentGateway.to});
+                 if(user){
+                     let solidityFunction = new SolidityFunction('', _.find(DePayGateway_ABI, { name: 'claimToken' }), '');
+                     let payloadData = solidityFunction.toPayload([paymentGateway.from, paymentGateway.to,user.walletAddress,process.env.TOKEN_CONTRACT_ADDRESS]).data;  //console.log(payloadData);
+                     var gasPrice = web3.eth.gasPrice;
+                     var gasPriceHex = web3.toHex(gasPrice);
+                     var gasLimitHex = web3.toHex(300000);
+                     var nonce =  web3.eth.getTransactionCount(process.env.ADMIN_ACCOUNT_ADDRESS);
+                     var nonceHex = web3.toHex(nonce);
+                     var rawTx = {
+                         nonce: nonceHex,
+                         gasPrice: gasPriceHex,
+                         gasLimit: gasLimitHex,
+                         to: process.env.DePayGatewayAddress,
+                         from: process.env.ADMIN_ACCOUNT_ADDRESS,
+                         data: payloadData
+                     };
+
+                     let key = Buffer.from(process.env.ADMIN_ACCOUNT_PRIVATEKEY, 'hex');
+                     let tx = new Tx(rawTx);
+                     tx.sign(key);
+                     console.log(tx.sign(key));
+                     let serializedTx = tx.serialize();
+                     var result = await web3.eth.sendRawTransaction('0x' + serializedTx.toString('hex'));
+                     callback(null, {status:true,data:result});
+                 }
+
              }
         }
     };
