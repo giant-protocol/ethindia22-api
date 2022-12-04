@@ -20,13 +20,13 @@ var PaymentHelper = function (depay) {
             });
             if(args.toUser){
                 args.body.walletAddress = args.toUser.walletAddress;
-                args.title ="Money Received";
+                args.title ="Token Received";
                 args.message ='congratulation! You received '+args.body.amount + ' '+args.body.cryptoSymbol +'  in your account and will be available for use in the Depay app.'
                 depay.helpers.api.user(depay).sendPushProtocalNotification(args);
             }
             if(args.user){
                 args.body.walletAddress = args.user.walletAddress;
-                args.title ="Money Received";
+                args.title ="Token Sent";
                 args.message ='You have sent '+args.body.amount + ' '+args.body.cryptoSymbol +' from your Depay wallet.'
                 depay.helpers.api.user(depay).sendPushProtocalNotification(args);
             }
