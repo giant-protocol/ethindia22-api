@@ -21,7 +21,7 @@ var PaymentHelper = function (depay) {
             if(args.toUser){
                 args.body.walletAddress = args.user.walletAddress;
                 args.title ="Money Received";
-                args.message ='You received '+args.body.amount.toFixed(4) + ' '+args.body.cryptoSymbol +'  in your account and will be available for use the Depay app.'
+                args.message ='You received '+args.body.amount + ' '+args.body.cryptoSymbol +'  in your account and will be available for use the Depay app.'
                 this.sendPushProtocalNotification(args);
             }
             callback(null, {status : true,message :'Transaction has been created'});
@@ -34,7 +34,7 @@ var PaymentHelper = function (depay) {
                     if(args.toUser){
                         args.body.walletAddress = user.walletAddress;
                         args.title ="DEPAY Received";
-                        args.message ='You received '+txn.amount.toFixed(4) + ' '+txn.cryptoSymbol +'in your account and will be available for use the Depay app.'
+                        args.message ='You received '+ txn.amount + ' '+txn.cryptoSymbol +'in your account and will be available for use the Depay app.'
                         depay.helpers.api.user(depay).sendPushProtocalNotification(args);
                     }
                 }
