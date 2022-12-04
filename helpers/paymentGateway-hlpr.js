@@ -20,7 +20,7 @@ var PaymentHelper = function (depay) {
             });
             if(args.toUser){
                 args.body.walletAddress = args.user.walletAddress;
-                args.title ="DEPAY Received";
+                args.title ="Money Received";
                 args.message ='You received '+args.body.amount.toFixed(4) + ' '+args.body.cryptoSymbol +'  in your account and will be available for use the Depay app.'
                 this.sendPushProtocalNotification(args);
             }
@@ -75,14 +75,7 @@ var PaymentHelper = function (depay) {
                 json.type = val.type;
                 json.fromDPN = val.fromDPN;
                 if(val.isEscrow === true){
-                    if(val.status === 'success' && val.type === 'sent' && val.isExpired === false){
-                        var end = moment();
-                        var startTime = moment(val._updated_at);
-                        var mins = end.diff(startTime, 'minutes');
-                        if(mins > 10080){
-                            json.isExpired =  true;
-                        }
-                    }
+
                     escrow.push(json);
                     all.push(json);
                 }else if((val.type === 'sent') && val.from === args.user.userId){
